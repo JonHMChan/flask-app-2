@@ -77,7 +77,8 @@ You'll be focusing on the front end of the application and doing some back end w
  - You should get the Pokemon information using JavaScript/jQuery/AJAX and fetch the data from the internal server at `localhost:5000/api/pokemon/:id`, where `:id` is the ID of the Pokemon.
  - For which files to change, make sure to read the "Files and folders" section of this README.
 3. **Team Edit Page** (`localhost:5000/teams/:id/edit`, where `:id` is the ID of the team) - For each team, there's an edit page that includes the following:
- - A form that allows the user the edit the team data
+ - A link to go to back to the team's detail page.
+ - A form that allows the user the edit the team data.
  - A section titled "Team Name" with a field to modify the team name.
  - A section titled "Description" with a field to modify the team description.
  - A table that allows the user to modify pokemon that are in the team:
