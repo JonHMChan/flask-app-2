@@ -12,10 +12,24 @@ $(document).ready(function() {
                     <img class="pokemon-image" src=${pokemon.image_url} />
                 `;
                 $pokemon.append(html);
-                $(".pokemon-container").append($pokemon);
+                $(".js-pokemon-container").append($pokemon);
             }
         }
     });
 
     // Maybe you should also get the team information to display too...
+
+    $.ajax({
+        method: "GET",
+        url: "/api/teams",
+        success: function(data) {
+            for (var i = 0; i < data.length; i++) {
+                var team = data[i];
+                var $team = $(`<a href="/teams/${team.id}">${team.name}</a>
+                `);
+                $team.addClass("team")
+                $(".js-teams-container").append($team);
+            }
+        }
+    })
 })
