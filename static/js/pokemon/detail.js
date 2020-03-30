@@ -2,7 +2,7 @@
 $(document).ready(function() {
     $.ajax({
         method: "GET",
-        url: "/api/pokemon/" + window.location.pathname,
+        url: "/api" + window.location.pathname,
         success: function(data) {
             $(".pokemon-name").html(data.name);
             $(".pokemon-image").attr("src", data.image_url);
@@ -14,7 +14,7 @@ $(document).ready(function() {
                 var evolution = data.evolutions[j];
                 $(".pokemon-evolutions").append(`
                     <tr>
-                        <td><a class="pokemon-evolution" href="/${evolution.id}">${evolution.to}</a></td>
+                        <td><a class="pokemon-evolution" href="/pokemon/${evolution.id}">${evolution.to}</a></td>
                         <td>${evolution.level}</td>
                         <td>${evolution.method}</td>
                     </tr>

@@ -12,11 +12,11 @@
     margin: 50px auto;
 }
 
-.back {
+.navigation {
     margin-bottom: 15px;
 }
 
-h2 {
+h1 {
     margin-bottom: 10px
 }
 
@@ -27,4 +27,8 @@ section {
 th, td {
     padding: 10px;
     border: 1px solid #ccc;
+}
+
+.pokemon-image {
+    width: 150px;
 }
