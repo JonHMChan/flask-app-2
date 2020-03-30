@@ -1,5 +1,5 @@
 # Flask App 2: Pokedex Teams with Advanced Front End and Building APIs
-For this exercise, you'll be creating a Pokedex that displays all of the original 151 Pokemon and detail pages for each Pokemon. The application is also live at https://fast-badlands-06972.herokuapp.com/ if you would like to see how it works.
+For this exercise, you'll be creating a Pokedex that displays all of the original 151 Pokemon and detail pages for each Pokemon. This will also allow you to view teams and edit them. The application is also live at https://fast-badlands-06972.herokuapp.com/ if you would like to see how it works.
 
 ![Pokedex Homepage](https://raw.githubusercontent.com/JonHMChan/flask-app-2/master/static/img/preview.png)
 
