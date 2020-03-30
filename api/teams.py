@@ -33,16 +33,13 @@ current_id = len(DATABASE) + 1
 # API route that returns all teams from DATABASE
 @teams.route('/teams', methods=['GET'])
 def api_teams_get():
-    return jsonify(DATABASE), 200
+    return "Fix me!"
 
 # API route that returns a single teams from DATABASE according to the ID in the URL
 # For example /api/teams/1 will give you Ash's Team
 @teams.route('/teams/<int:id>', methods=['GET'])
 def api_teams_id_get(id):
-    for teams in DATABASE:
-        if teams.get("id") == id:
-            return jsonify(teams), 200
-    return jsonify({}), 404
+    return "Fix me!"
 
 # API route that creates a new team using the request body JSON and inserts it at the end of DATABASE
 @teams.route('/teams', methods=['POST'])
@@ -83,24 +80,10 @@ def api_teams_id_post():
     # Return the newly inserted teams as a response
     return jsonify(teams)
 
-# API route that does a full update by replacing the entire teams dictionary at the specified ID with the request body JSON
-# For example sending { "name": "Foobar" } to /api/teams/1 would replace the Bulbasaur dictionary with the object { "name": "Foobar" }
+# API route that does a full update by replacing the entire team dictionary at the specified ID with the request body JSON
 @teams.route('/teams/<int:id>', methods=['PUT'])
 def api_teams_id_put(id):
-
-    # Get the JSON from the request body and turn it into a Python dictionary
-    json = request.get_json(id)
-
-    # Iterate through the teams DATABASE, making sure the index is available by using enumerate()
-    for index, teams in enumerate(DATABASE):
-
-        # If the ID matches, replace the entire teams dictionary with the request body JSON at the same index
-        if teams.get("id") == id:
-            DATABASE[index] = json
-            return jsonify(json), 200
-    
-    # If no teams with the ID in the URL can be found in DATABASE, return nothing
-    return jsonify({}), 404
+    return "Fix me!"
 
 # API route that does a partial update by changing the values of the teams dictionary at the specified ID with the values in request body JSON
 # For example sending { "name": "Foobar" } to /api/teams/1 would only change Bulbasaur's name to "Foobar" - nothing else would change
@@ -133,11 +116,4 @@ def api_teams_id_patch(id):
 # For example /api/teams/1 will delete Bulbasaur
 @teams.route('/teams/<int:id>', methods=['DELETE'])
 def api_teams_id_delete(id):
-    # Declare DATABASE as a global so it can be used correctly in this function
-    global DATABASE
-
-    # Filter the list so any teams dictionaries with the ID specified in the URL are removed from DATABASE
-    DATABASE = list(filter(lambda x: x.get("id") != id, DATABASE))
-
-    # Return an empty object
-    return jsonify({}), 200
+    return "Fix me!"

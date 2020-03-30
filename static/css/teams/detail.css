@@ -6,29 +6,3 @@
 }
 
 /* Your styles begin here */
-
-.container {
-    max-width: 800px;
-    margin: 50px auto;
-}
-
-.navigation {
-    margin-bottom: 15px;
-}
-
-h1 {
-    margin-bottom: 10px
-}
-
-section {
-    margin-bottom: 25px;
-}
-
-th, td {
-    padding: 10px;
-    border: 1px solid #ccc;
-}
-
-.pokemon-image {
-    width: 150px;
-}
