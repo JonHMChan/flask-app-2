@@ -8,27 +8,28 @@
 /* Your styles begin here */
 
 .container {
-    max-width: 800px;
+    max-width: 600px;
     margin: 50px auto;
-}
-
-.navigation {
-    display: flex;
-    max-width: 300px;
-    margin: 0 auto;
-    justify-content: space-between;
 }
 
 .header {
     display: flex;
+    flex-direction: column;
+}
+
+.header > * {
+    margin-top: 10px;
 }
 
 .teams-pokemon{
-    margin: 0 auto;
     margin-top: 20px;
 }
 
 th, td {
     border: 1px solid lightgray;
     padding: 20px;
+}
+
+.poke-image {
+    max-width: 100%;
 }
