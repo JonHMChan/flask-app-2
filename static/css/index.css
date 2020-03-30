@@ -16,6 +16,14 @@ h1 {
     margin-bottom: 25px;
 }
 
+.flex-container {
+    display: flex;
+}
+
+.pokemon-container {
+    margin-left: 20px;
+}
+
 .pokemon {
     display: inline-block;
     text-align: center;
