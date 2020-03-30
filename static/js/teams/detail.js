@@ -33,4 +33,20 @@ $(document).ready(function() {
         }
     });
 
+    $(".js-edit").attr("href", `${window.location.pathname}/edit`);
+    $(".js-delete").click(deleteTeam);
+
+
+    function deleteTeam() {
+        $.ajax({
+            method: "DELETE",
+            url: "../api" + window.location.pathname,
+            success: function() {
+                console.log("deletion success");
+                window.location.pathname = "/";
+            }
+        })
+    }
+
 });
+

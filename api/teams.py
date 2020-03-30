@@ -127,5 +127,5 @@ def api_teams_id_patch(id):
 def api_teams_id_delete(id):
     for teams in DATABASE:
         if teams.get("id") == id:
-            DATABASE.pop(teams)
+            DATABASE.remove(teams)
             return jsonify({}), 204
