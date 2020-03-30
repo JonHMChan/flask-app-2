@@ -33,13 +33,16 @@ current_id = len(DATABASE) + 1
 # API route that returns all teams from DATABASE
 @teams.route('/teams', methods=['GET'])
 def api_teams_get():
-    return "Fix me!"
+    return jsonify(DATABASE), 200
 
 # API route that returns a single teams from DATABASE according to the ID in the URL
 # For example /api/teams/1 will give you Ash's Team
 @teams.route('/teams/<int:id>', methods=['GET'])
 def api_teams_id_get(id):
-    return "Fix me!"
+    for teams in DATABASE:
+        if teams.get("id") == id:
+            return jsonify(teams), 200
+    return jsonify({}), 404
 
 # API route that creates a new team using the request body JSON and inserts it at the end of DATABASE
 @teams.route('/teams', methods=['POST'])
@@ -83,7 +86,13 @@ def api_teams_id_post():
 # API route that does a full update by replacing the entire team dictionary at the specified ID with the request body JSON
 @teams.route('/teams/<int:id>', methods=['PUT'])
 def api_teams_id_put(id):
-    return "Fix me!"
+
+    json = request.get_json()
+
+    for teams in DATABASE:
+        if teams.get("id") == id:
+            DATABASE.update(teams,json)   
+            return jsonify(teams), 200
 
 # API route that does a partial update by changing the values of the teams dictionary at the specified ID with the values in request body JSON
 # For example sending { "name": "Foobar" } to /api/teams/1 would only change Bulbasaur's name to "Foobar" - nothing else would change
@@ -116,4 +125,7 @@ def api_teams_id_patch(id):
 # For example /api/teams/1 will delete Bulbasaur
 @teams.route('/teams/<int:id>', methods=['DELETE'])
 def api_teams_id_delete(id):
-    return "Fix me!"
+    for teams in DATABASE:
+        if teams.get("id") == id:
+            DATABASE.pop(teams)
+            return jsonify({}), 204
