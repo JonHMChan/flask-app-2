@@ -10,19 +10,19 @@ $(document).ready(function() {
             $(".js-header")
                 .append(teamName)
                 .append(teamDescription);
-            pokemonList = data.members;
+            teamPokemonList = data.members;
             $.ajax({
                 method: "GET",
                 url: "../api/pokemon",
                 success: function(pokemonData) {
 
-                    for (x = 0; x < pokemonList.length; x++) {
-                        currentPokemon = pokemonList[x].pokemon_id;
+                    for (x = 0; x < teamPokemonList.length; x++) {
+                        currentPokemon = teamPokemonList[x].pokemon_id;
                         $pokemonRow = 
                         `<tr>
                             <td><img class="poke-image" src=${pokemonData[currentPokemon-1].image_url}></td>
                             <td><a href="/pokemon/${currentPokemon}">${pokemonData[currentPokemon-1].name}</a></td>
-                            <td>${pokemonList[x].level}</td>
+                            <td>${teamPokemonList[x].level}</td>
                             <td>${pokemonData[currentPokemon-1].types}</td>
                         </tr>`;
                         $(".js-teams-pokemon").append($pokemonRow);
@@ -41,8 +41,7 @@ $(document).ready(function() {
         $.ajax({
             method: "DELETE",
             url: "../api" + window.location.pathname,
-            success: function() {
-                console.log("deletion success");
+            success: function(data) {
                 window.location.pathname = "/";
             }
         })
