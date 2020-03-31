@@ -26,18 +26,22 @@
 .team-name-input {
     width: 200px;
     height: 2rem;
+}
+
+.input {
     margin-bottom: 20px;
+    font-size: inherit;
+    padding: 5px;
+    border: 1px solid lightgray;
 }
 
 .team-description-input {
     width: 400px;
-    border: 1px solid lightgray;
-    margin-bottom: 20px;
 }
 
 th, td {
     border: 1px solid lightgray;
-    padding: 20px;
+    padding: 10px;
 }
 
 .poke-image {
@@ -47,4 +51,20 @@ th, td {
 .level-input {
     height: 2rem;
     width: 40px;
+    padding: 2px;
+    font-size: inherit;
+}
+
+button {
+    padding: 2px;
+}
+
+#submit {
+    background-color:white;
+    border-radius: 0;
+    border: 1px solid lightgray;
+    padding: 10px;
+    font-weight: bold;
+    font-size: inherit;
+    margin-top: 20px;
 }

@@ -14,7 +14,7 @@ $(document).ready(function() {
 
             $(".js-back").attr("href",`/teams/${data.id}`);
             $(".js-team-name-input").attr("value",`${teamName}`);
-            $(".js-team-description-input").attr("placeholder",`${teamDescription}`);
+            $(".js-team-description-input").text(`${teamDescription}`);
             teamPokemonList = data.members;
             $.ajax({
                 method: "GET",
