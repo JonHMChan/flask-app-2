@@ -43,7 +43,7 @@ $(document).ready(function() {
                             <td><img class="poke-image" src=${pokemonImageUrl}></td>
                             <td><a href="/pokemon/${pokemonId}">${pokemonName}</a></td>
                             <td>
-                                <input type="number" name="Pokemon Level" value="${pokemonLevel}" class="level-input" form="team-edits">
+                                <input type="number" name="level${pokemonId}" value="${pokemonLevel}" class="level-input" id="js-change-${pokemonId}" form="js-team-edits">
                             </td>
                             <td>${pokemonTypes}</td>
                             <td><button type="button" form="js-team-edits"  id="js-remove-${pokemonId}" value="${pokemonId}">Remove</button>
@@ -66,12 +66,27 @@ $(document).ready(function() {
         interimData = $("#js-team-edits").serializeArray();
         var dataToSend = {};
         $.map(interimData, function(n) {
-            dataToSend[`${n.name}`] = `${n.value}`;
+            if (`${n.name}`.includes("level")) {
+                idToChange = `${n.name}`.slice(5);
+                console.log(idToChange);
+                for (i = 0; i < pokemonToKeep.length; i++) {
+                    if (idToChange == pokemonToKeep[i]["pokemon_id"]) {
+                        pokemonToKeep[i]["level"] = `${n.value}`;
+                        continue;
+                    }
+                }
+                
+            }
+            else{
+                dataToSend[`${n.name}`] = `${n.value}`;
+            }
         });
 
-        if (pokemonToKeep.length < originalPokemonCount) {
-            dataToSend["members"] = pokemonToKeep;
-        }
+
+        dataToSend["members"] = pokemonToKeep;
+        
+
+        
 
         console.log(dataToSend);
 
