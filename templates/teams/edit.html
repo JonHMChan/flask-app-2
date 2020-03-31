@@ -16,16 +16,17 @@
         <div class="container">
             <a class="js-back" href="">Back to team page</a>
 
-            <form class="edit-form" id="team-edits">
+            <form class="edit-form" id="js-team-edits">
+                <input type="hidden" class="js-hidden-team-id" name="id" value="">
                 <label for="team-name" class="form-label">Team Name</label>
-                <input type="text" id="teamName" class="js-team-name-input team-name-input input" name="Team Name">
+                <input type="text" id="teamName" class="js-team-name-input team-name-input input" name="name">
                 <label for="team-description" class="form-label">Description</label>
-                <textarea id="team-description" class="js-team-description-input team-description-input input" name="Team Description" rows="10"></textarea>
+                <textarea id="team-description" class="js-team-description-input team-description-input input" name="description" rows="10"></textarea>
             </form>
             <table class="js-teams-pokemon">
                 <tr><th colspan="2">Pokemon</th><th>Level</th><th>Type</th><th>Remove</th></tr>
             </table>
-            <button type="button" id="submit">Submit</button>
+            <button type="button" id="submit" form="js-team-edits" class="js-submit">Submit</button>
         </div>
 
         

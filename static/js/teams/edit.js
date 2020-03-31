@@ -4,18 +4,27 @@
 $(document).ready(function() {
 
     teamUrlArray = window.location.pathname.split("/");
+    teamUrl = `/api/${teamUrlArray[1]}/${teamUrlArray[2]}`;
+    pokemonToKeep = [];
+    originalPokemonCount = 0;
 
     $.ajax({
         method: "GET",
-        url: `/api/${teamUrlArray[1]}/${teamUrlArray[2]}`,
+        url: teamUrl,
         success: function(data) {
             teamName = `${data.name}`;
             teamDescription = `${data.description}`;
 
+            $(".js-hidden-team-id").attr("value",`${data.id}`);
             $(".js-back").attr("href",`/teams/${data.id}`);
             $(".js-team-name-input").attr("value",`${teamName}`);
             $(".js-team-description-input").text(`${teamDescription}`);
             teamPokemonList = data.members;
+            originalPokemonCount = teamPokemonList.length;
+            for (i = 0; i < teamPokemonList.length; i++){
+                pokemonToKeep.push(teamPokemonList[i]);
+            }
+            console.log(pokemonToKeep);
             $.ajax({
                 method: "GET",
                 url: "/api/pokemon",
@@ -28,6 +37,7 @@ $(document).ready(function() {
                         pokemonLevel = teamPokemonList[x].level;
                         pokemonTypes = pokemonData[pokemonId-1].types;
                         
+                        
                         $pokemonRow = 
                         `<tr>
                             <td><img class="poke-image" src=${pokemonImageUrl}></td>
@@ -36,10 +46,13 @@ $(document).ready(function() {
                                 <input type="number" name="Pokemon Level" value="${pokemonLevel}" class="level-input" form="team-edits">
                             </td>
                             <td>${pokemonTypes}</td>
-                            <td><button type="button" form="team-edits" name="Remove Pokemon" value="${pokemonId}">Remove</td>
+                            <td><button type="button" form="js-team-edits"  id="js-remove-${pokemonId}" value="${pokemonId}">Remove</button>
+                            </td>
                         </tr>`;
-
+                        
                         $(".js-teams-pokemon").append($pokemonRow);
+                        $(`#js-remove-${pokemonId}`).click(removePokemonRow);
+                        
                     }
                 }
             })
@@ -47,18 +60,46 @@ $(document).ready(function() {
         }
     });
 
-   // $(".js-edit").attr("href", `${window.location.pathname}/edit`);
-    //$(".js-delete").click(deleteTeam);
 
+    $(".js-submit").click(function(event) {
 
-    function deleteTeam() {
+        interimData = $("#js-team-edits").serializeArray();
+        var dataToSend = {};
+        $.map(interimData, function(n) {
+            dataToSend[`${n.name}`] = `${n.value}`;
+        });
+
+        if (pokemonToKeep.length < originalPokemonCount) {
+            dataToSend["members"] = pokemonToKeep;
+        }
+
+        console.log(dataToSend);
+
         $.ajax({
-            method: "DELETE",
-            url: "../api" + window.location.pathname,
+            method: "PATCH",
+            url: teamUrl,
+            contentType:"application/json; charset=utf-8",
+            data: JSON.stringify(dataToSend),
             success: function(data) {
-                window.location.pathname = "/";
+                console.log("success");
+                window.location.pathname = `/teams/${teamUrlArray[2]}`;
             }
-        })
+        });
+
+        return false;
+    });
+
+
+    function removePokemonRow() {
+        pokemon = $(this).attr("value");
+        $(this).closest("tr").hide();
+        for (i = 0; i < pokemonToKeep.length; i++) {
+            if (pokemonToKeep[i]["pokemon_id"] == pokemon){
+                pokemonToKeep.splice(i, 1);
+                console.log("did it");
+            }
+        }
+        console.log(pokemonToKeep);
     }
 
 });

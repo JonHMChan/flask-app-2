@@ -91,7 +91,7 @@ def api_teams_id_put(id):
 
     for teams in DATABASE:
         if teams.get("id") == id:
-            DATABASE.update(teams,json)   
+            DATABASE.update(teams, json)   
             return jsonify(teams), 200
 
 # API route that does a partial update by changing the values of the teams dictionary at the specified ID with the values in request body JSON
@@ -101,6 +101,7 @@ def api_teams_id_patch(id):
 
     # Get the JSON from the request body and turn it into a Python dictionary
     json = request.get_json()
+    print(json)
 
     # Iterate through all of the teams DATABASE
     for teams in DATABASE:
