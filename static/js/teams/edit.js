@@ -5,31 +5,28 @@ $(document).ready(function() {
 
     teamUrlArray = window.location.pathname.split("/");
     teamUrl = `/api/${teamUrlArray[1]}/${teamUrlArray[2]}`;
-    pokemonToKeep = [];
+    teamPokemonList = [];
     originalPokemonCount = 0;
 
     $.ajax({
         method: "GET",
         url: teamUrl,
         success: function(data) {
+            teamId = `${data.id}`
             teamName = `${data.name}`;
             teamDescription = `${data.description}`;
-
-            $(".js-hidden-team-id").attr("value",`${data.id}`);
-            $(".js-back").attr("href",`/teams/${data.id}`);
-            $(".js-team-name-input").attr("value",`${teamName}`);
-            $(".js-team-description-input").text(`${teamDescription}`);
             teamPokemonList = data.members;
             originalPokemonCount = teamPokemonList.length;
-            for (i = 0; i < teamPokemonList.length; i++){
-                pokemonToKeep.push(teamPokemonList[i]);
-            }
-            console.log(pokemonToKeep);
+
+            $(".js-hidden-team-id").attr("value",`${teamId}`);
+            $(".js-back").attr("href",`/teams/${teamId}`);
+            $(".js-team-name-input").attr("value",`${teamName}`);
+            $(".js-team-description-input").text(`${teamDescription}`);
+            
             $.ajax({
                 method: "GET",
                 url: "/api/pokemon",
                 success: function(pokemonData) {
-
                     for (x = 0; x < teamPokemonList.length; x++) {
                         pokemonId = teamPokemonList[x].pokemon_id;
                         pokemonImageUrl = pokemonData[pokemonId-1].image_url;
@@ -37,17 +34,13 @@ $(document).ready(function() {
                         pokemonLevel = teamPokemonList[x].level;
                         pokemonTypes = pokemonData[pokemonId-1].types;
                         
-                        
                         $pokemonRow = 
                         `<tr>
                             <td><img class="poke-image" src=${pokemonImageUrl}></td>
                             <td><a href="/pokemon/${pokemonId}">${pokemonName}</a></td>
-                            <td>
-                                <input type="number" name="level${pokemonId}" value="${pokemonLevel}" class="level-input" id="js-change-${pokemonId}" form="js-team-edits">
-                            </td>
+                            <td><input type="number" name="level${pokemonId}" value="${pokemonLevel}" class="level-input" id="js-change-${pokemonId}" form="js-team-edits"></td>
                             <td>${pokemonTypes}</td>
-                            <td><button type="button" form="js-team-edits"  id="js-remove-${pokemonId}" value="${pokemonId}">Remove</button>
-                            </td>
+                            <td><button type="button" form="js-team-edits"  id="js-remove-${pokemonId}" value="${pokemonId}">Remove</button></td>
                         </tr>`;
                         
                         $(".js-teams-pokemon").append($pokemonRow);
@@ -69,9 +62,9 @@ $(document).ready(function() {
             if (`${n.name}`.includes("level")) {
                 idToChange = `${n.name}`.slice(5);
                 console.log(idToChange);
-                for (i = 0; i < pokemonToKeep.length; i++) {
-                    if (idToChange == pokemonToKeep[i]["pokemon_id"]) {
-                        pokemonToKeep[i]["level"] = `${n.value}`;
+                for (i = 0; i < teamPokemonList.length; i++) {
+                    if (idToChange == teamPokemonList[i]["pokemon_id"]) {
+                        teamPokemonList[i]["level"] = `${n.value}`;
                         continue;
                     }
                 }
@@ -83,7 +76,7 @@ $(document).ready(function() {
         });
 
 
-        dataToSend["members"] = pokemonToKeep;
+        dataToSend["members"] = teamPokemonList;
         
 
         
@@ -108,13 +101,13 @@ $(document).ready(function() {
     function removePokemonRow() {
         pokemon = $(this).attr("value");
         $(this).closest("tr").hide();
-        for (i = 0; i < pokemonToKeep.length; i++) {
-            if (pokemonToKeep[i]["pokemon_id"] == pokemon){
-                pokemonToKeep.splice(i, 1);
+        for (i = 0; i < teamPokemonList.length; i++) {
+            if (teamPokemonList[i]["pokemon_id"] == pokemon){
+                teamPokemonList.splice(i, 1);
                 console.log("did it");
             }
         }
-        console.log(pokemonToKeep);
+        console.log(teamPokemonList);
     }
 
 });
