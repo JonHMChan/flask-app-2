@@ -1,12 +1,11 @@
 // Your code starts here
-
-// Your code starts here
 $(document).ready(function() {
 
     teamUrlArray = window.location.pathname.split("/");
     teamUrl = `/api/${teamUrlArray[1]}/${teamUrlArray[2]}`;
     teamPokemonList = [];
-    originalPokemonCount = 0;
+    anyPokemonChanges = false;
+    anyTeamChanges = false;
 
     $.ajax({
         method: "GET",
@@ -52,63 +51,58 @@ $(document).ready(function() {
             
         }
     });
-
-
     $(".js-submit").click(function(event) {
-
-        interimData = $("#js-team-edits").serializeArray();
-        var dataToSend = {};
-        $.map(interimData, function(n) {
-            if (`${n.name}`.includes("level")) {
-                idToChange = `${n.name}`.slice(5);
-                console.log(idToChange);
-                for (i = 0; i < teamPokemonList.length; i++) {
-                    if (idToChange == teamPokemonList[i]["pokemon_id"]) {
-                        teamPokemonList[i]["level"] = `${n.value}`;
-                        continue;
-                    }
-                }
-                
+        formDataAsArray = $("#js-team-edits").serializeArray();
+        dataToSend = {};
+        $.map(formDataAsArray, function(n) {
+            if ((`${n.name}`).includes("level")) {
+                changeLevelIfUpdated(n);
             }
-            else{
+            else {
                 dataToSend[`${n.name}`] = `${n.value}`;
+                anyTeamChanges = true;
             }
         });
-
-
-        dataToSend["members"] = teamPokemonList;
+        if (anyPokemonChanges) {
+            dataToSend["members"] = teamPokemonList;
+        }
+        if (anyPokemonChanges || anyTeamChanges) {
+            $.ajax({
+                method: "PATCH",
+                url: teamUrl,
+                contentType:"application/json; charset=utf-8",
+                data: JSON.stringify(dataToSend),
+                success: function(data) {
+                    window.location.pathname = `/teams/${teamUrlArray[2]}`;
+                }
+            });
+        } else {
+            window.location.pathname = `/teams/${teamUrlArray[2]}`
+        }
         
-
-        
-
-        console.log(dataToSend);
-
-        $.ajax({
-            method: "PATCH",
-            url: teamUrl,
-            contentType:"application/json; charset=utf-8",
-            data: JSON.stringify(dataToSend),
-            success: function(data) {
-                console.log("success");
-                window.location.pathname = `/teams/${teamUrlArray[2]}`;
-            }
-        });
-
         return false;
     });
-
-
+    function changeLevelIfUpdated(n) {
+        idForLevelUpdate = `${n.name}`.slice(5);
+        for (i = 0; i < teamPokemonList.length; i++) {
+            if (idForLevelUpdate == teamPokemonList[i]["pokemon_id"]) {
+                if (teamPokemonList[i]["level"] != `${n.value}`) {
+                    teamPokemonList[i]["level"] = `${n.value}`;
+                    anyPokemonChanges = true;
+                    return true;
+                }
+            }
+        }
+    }
     function removePokemonRow() {
         pokemon = $(this).attr("value");
         $(this).closest("tr").hide();
         for (i = 0; i < teamPokemonList.length; i++) {
             if (teamPokemonList[i]["pokemon_id"] == pokemon){
                 teamPokemonList.splice(i, 1);
-                console.log("did it");
+                anyPokemonChanges = true;
             }
         }
-        console.log(teamPokemonList);
     }
-
 });
 
