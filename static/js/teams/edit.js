@@ -1,16 +1,18 @@
 // Your code starts here
 $(document).ready(function() {
 
-    teamUrlArray = window.location.pathname.split("/");
-    teamUrl = `/api/${teamUrlArray[1]}/${teamUrlArray[2]}`;
+    urlArray = window.location.pathname.split("/");
+    teamApiUrl = `/api/${urlArray[1]}/${urlArray[2]}`;
+    teamHomeUrl = `/teams/${urlArray[2]}`;
     teamPokemonList = [];
     anyPokemonChanges = false;
     anyTeamChanges = false;
 
     $.ajax({
         method: "GET",
-        url: teamUrl,
+        url: teamApiUrl,
         success: function(data) {
+            
             teamId = `${data.id}`
             teamName = `${data.name}`;
             teamDescription = `${data.description}`;
@@ -27,12 +29,12 @@ $(document).ready(function() {
                 url: "/api/pokemon",
                 success: function(pokemonData) {
                     for (x = 0; x < teamPokemonList.length; x++) {
+
                         pokemonId = teamPokemonList[x].pokemon_id;
                         pokemonImageUrl = pokemonData[pokemonId-1].image_url;
                         pokemonName = pokemonData[pokemonId-1].name;
                         pokemonLevel = teamPokemonList[x].level;
                         pokemonTypes = pokemonData[pokemonId-1].types;
-                        
                         $pokemonRow = 
                         `<tr>
                             <td><img class="poke-image" src=${pokemonImageUrl}></td>
@@ -51,7 +53,10 @@ $(document).ready(function() {
             
         }
     });
-    $(".js-submit").click(function(event) {
+    
+    $(".js-submit").click(assessChangesAndSubmit);
+
+    function assessChangesAndSubmit() {
         formDataAsArray = $("#js-team-edits").serializeArray();
         dataToSend = {};
         $.map(formDataAsArray, function(n) {
@@ -69,19 +74,18 @@ $(document).ready(function() {
         if (anyPokemonChanges || anyTeamChanges) {
             $.ajax({
                 method: "PATCH",
-                url: teamUrl,
+                url: teamApiUrl,
                 contentType:"application/json; charset=utf-8",
                 data: JSON.stringify(dataToSend),
                 success: function(data) {
-                    window.location.pathname = `/teams/${teamUrlArray[2]}`;
+                    window.location.pathname = teamHomeUrl;
                 }
             });
         } else {
-            window.location.pathname = `/teams/${teamUrlArray[2]}`
+            window.location.pathname = teamHomeUrl;
         }
-        
         return false;
-    });
+    }
     function changeLevelIfUpdated(n) {
         idForLevelUpdate = `${n.name}`.slice(5);
         for (i = 0; i < teamPokemonList.length; i++) {
