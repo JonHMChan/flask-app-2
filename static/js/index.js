@@ -17,17 +17,16 @@ $(document).ready(function() {
         }
     });
 
-    // Maybe you should also get the team information to display too...
-
     $.ajax({
         method: "GET",
         url: "/api/teams",
         success: function(data) {
             for (var i = 0; i < data.length; i++) {
                 var team = data[i];
-                var $team = $(`<a href="/teams/${team.id}">${team.name}</a>
+                var $team = $(`
+                    <a href="/teams/${team.id}">${team.name}</a>
                 `);
-                $team.addClass("team")
+                $team.addClass("team");
                 $(".js-teams-container").append($team);
             }
         }

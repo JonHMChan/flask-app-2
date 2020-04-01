@@ -101,7 +101,6 @@ def api_teams_id_patch(id):
 
     # Get the JSON from the request body and turn it into a Python dictionary
     json = request.get_json()
-    print(json)
 
     # Iterate through all of the teams DATABASE
     for teams in DATABASE:

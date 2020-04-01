@@ -5,20 +5,20 @@ $(document).ready(function() {
         method: "GET",
         url: "../api/" + window.location.pathname,
         success: function(data) {
-            teamName = `<h1>${data.name}</h1>`;
-            teamDescription = `<p>${data.description}</p>`;
+            var teamName = `<h1>${data.name}</h1>`;
+            var teamDescription = `<p>${data.description}</p>`;
+            var teamPokemonList = data.members;
             $(".js-header")
                 .append(teamName)
                 .append(teamDescription);
-            teamPokemonList = data.members;
+
             $.ajax({
                 method: "GET",
                 url: "../api/pokemon",
                 success: function(pokemonData) {
-
                     for (x = 0; x < teamPokemonList.length; x++) {
-                        currentPokemon = teamPokemonList[x].pokemon_id;
-                        $pokemonRow = 
+                        var currentPokemon = teamPokemonList[x].pokemon_id;
+                        var $pokemonRow = 
                         `<tr>
                             <td><img class="poke-image" src=${pokemonData[currentPokemon-1].image_url}></td>
                             <td><a href="/pokemon/${currentPokemon}">${pokemonData[currentPokemon-1].name}</a></td>
@@ -28,14 +28,13 @@ $(document).ready(function() {
                         $(".js-teams-pokemon").append($pokemonRow);
                     }
                 }
-            })
+            });
             
         }
     });
 
     $(".js-edit").attr("href", `${window.location.pathname}/edit`);
     $(".js-delete").click(deleteTeam);
-
 
     function deleteTeam() {
         $.ajax({
@@ -46,6 +45,5 @@ $(document).ready(function() {
             }
         })
     }
-
 });
 
